@@ -1,11 +1,4 @@
 services:
-  # PostgreSQL Database
-  - type: postgresql
-    name: aws-waf-db
-    plan: free
-    databaseName: aws_waf_learning
-    ipAllowList: []
-
   # Web Service (serves both API and static frontend)
   - type: web
     name: aws-waf-app
@@ -23,3 +16,9 @@ services:
         fromDatabase:
           name: aws-waf-db
           property: connectionString
+
+databases:
+  - name: aws-waf-db
+    plan: free
+    databaseName: aws_waf_learning
+    ipAllowList: []
