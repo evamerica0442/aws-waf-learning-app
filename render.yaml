@@ -4,8 +4,8 @@ services:
     name: aws-waf-app
     env: node
     plan: free
-    buildCommand: npm install --include=dev && npm install --prefix client && npm run build && npm run db:migrate && npm run seed
-    startCommand: npm start
+    buildCommand: npm install --include=dev && npm install --prefix client && npm run build
+    startCommand: bash -c 'npm run db:push && npm run seed && npm start'
     healthCheckPath: /api/pillars
     envVars:
       - key: NODE_ENV
