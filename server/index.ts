@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // API Routes
-app.get('/api/pillars', async (_req, res) => {
+app.get('/api/pillars', async (_req: Request, res: Response) => {
   try {
     const pillars = await prisma.pillar.findMany({
       select: {
@@ -30,7 +30,7 @@ app.get('/api/pillars', async (_req, res) => {
   }
 });
 
-app.get('/api/pillars/:slug', async (req, res) => {
+app.get('/api/pillars/:slug', async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
     const pillar = await prisma.pillar.findUnique({
@@ -61,7 +61,7 @@ app.get('/api/pillars/:slug', async (req, res) => {
   }
 });
 
-app.get('/api/pillars/:slug/quiz', async (req, res) => {
+app.get('/api/pillars/:slug/quiz', async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
     const pillar = await prisma.pillar.findUnique({
@@ -87,7 +87,7 @@ app.get('/api/pillars/:slug/quiz', async (req, res) => {
 // ─── SCENARIOS API ─────────────────────────────────────────────────
 
 // GET /api/scenarios — list scenarios with optional filters
-app.get('/api/scenarios', async (req, res) => {
+app.get('/api/scenarios', async (req: Request, res: Response) => {
   try {
     const { pillar, difficulty, crossPillar } = req.query;
 
@@ -135,7 +135,7 @@ app.get('/api/scenarios', async (req, res) => {
 });
 
 // GET /api/scenarios/:id — full scenario detail
-app.get('/api/scenarios/:id', async (req, res) => {
+app.get('/api/scenarios/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const scenario = await prisma.scenario.findUnique({
@@ -166,7 +166,7 @@ app.get('/api/scenarios/:id', async (req, res) => {
 });
 
 // POST /api/scenarios/:id/attempts — submit an attempt
-app.post('/api/scenarios/:id/attempts', async (req, res) => {
+app.post('/api/scenarios/:id/attempts', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { sessionId, selectedOptionId, userAnswerText, selfRating } = req.body;
@@ -219,7 +219,7 @@ app.post('/api/scenarios/:id/attempts', async (req, res) => {
 });
 
 // GET /api/progress/:sessionId — per-pillar and overall progress
-app.get('/api/progress/:sessionId', async (req, res) => {
+app.get('/api/progress/:sessionId', async (req: Request, res: Response) => {
   try {
     const { sessionId } = req.params;
 
@@ -282,7 +282,7 @@ const clientBuildPath = path.join(__dirname, '..', 'client', 'dist');
 app.use(express.static(clientBuildPath));
 
 // SPA fallback - serve index.html for any non-API routes
-app.get('*', (_req, res) => {
+app.get('*', (_req: Request, res: Response) => {
   res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
