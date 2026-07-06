@@ -8,7 +8,7 @@
     "build": "npm run build:client && npm run build:server",
     "build:server": "tsc -p tsconfig.server.json",
     "build:client": "cd client && npm run build",
-    "start": "node server/index.js",
+    "start": "node dist/server/index.js",
     "seed": "tsx prisma/seed.ts",
     "db:migrate": "prisma migrate deploy",
     "db:push": "prisma db push",
