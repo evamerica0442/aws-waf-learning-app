@@ -1,0 +1,30 @@
+{
+  "name": "aws-waf-learning-app",
+  "version": "1.0.0",
+  "description": "A full-stack web application for learning the AWS Well-Architected Framework",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "tsx watch server/index.ts",
+    "build": "npm run build:client && npm run build:server",
+    "build:server": "tsc -p tsconfig.server.json",
+    "build:client": "cd client && npm run build",
+    "start": "node server/index.js",
+    "seed": "tsx prisma/seed.ts",
+    "db:migrate": "prisma migrate deploy",
+    "db:push": "prisma db push",
+    "postinstall": "prisma generate && cd client && npm install"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.0",
+    "prisma": "^5.22.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}

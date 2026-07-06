@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-aws-bg text-gray-800 antialiased;
+  }
+}
+
+@layer components {
+  .pillar-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition-all duration-200 hover:shadow-md hover:border-aws-orange/30;
+  }
+  .pillar-card-active {
+    @apply border-aws-orange/50 ring-2 ring-aws-orange/20;
+  }
+  .prose-heading {
+    @apply font-semibold text-aws-dark-blue;
+  }
+  .code-block {
+    @apply bg-gray-900 text-green-400 rounded-lg p-4 overflow-x-auto text-sm font-mono leading-relaxed;
+  }
+}

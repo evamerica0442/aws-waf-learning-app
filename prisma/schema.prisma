@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pillar {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  name      String
+  summary   String
+  iconName  String   @default("")
+
+  designPrinciples DesignPrinciple[]
+  useCases         UseCase[]
+  quizQuestions    QuizQuestion[]
+  scenarios        ScenarioPillar[]
+}
+
+model DesignPrinciple {
+  id          Int    @id @default(autoincrement())
+  pillarId    Int
+  title       String
+  description String
+
+  pillar Pillar @relation(fields: [pillarId], references: [id], onDelete: Cascade)
+}
+
+model UseCase {
+  id                  Int      @id @default(autoincrement())
+  pillarId            Int
+  title               String
+  problemStatement    String
+  recommendedApproach String
+  awsServicesInvolved String[]
+
+  pillar   Pillar   @relation(fields: [pillarId], references: [id], onDelete: Cascade)
+  examples Example[]
+}
+
+model Example {
+  id                 Int      @id @default(autoincrement())
+  useCaseId          Int
+  title              String
+  scenario           String
+  architectureNotes  String
+  codeOrConfigSnippet String?
+  diagramUrl         String?
+
+  useCase UseCase @relation(fields: [useCaseId], references: [id], onDelete: Cascade)
+}
+
+model QuizQuestion {
+  id                 Int    @id @default(autoincrement())
+  pillarId           Int
+  question           String
+  options            String[]
+  correctAnswerIndex Int
+  explanation        String
+
+  pillar Pillar @relation(fields: [pillarId], references: [id], onDelete: Cascade)
+}
+
+// ─── SCENARIOS FEATURE ─────────────────────────────────────────────
+
+model Scenario {
+  id            String   @id @default(uuid())
+  title         String
+  scenarioText  String
+  type          String   // "multiple_choice" | "open_ended"
+  isCrossPillar Boolean  @default(false)
+  difficulty    String   // "beginner" | "intermediate" | "advanced"
+  modelAnswer   String?  // used for open_ended type
+  pillars       ScenarioPillar[]
+  options       ScenarioOption[]
+  attempts      UserScenarioAttempt[]
+}
+
+model ScenarioPillar {
+  id         String   @id @default(uuid())
+  scenarioId String
+  pillarId   Int
+  isPrimary  Boolean  @default(true)
+  scenario   Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  pillar     Pillar   @relation(fields: [pillarId], references: [id], onDelete: Cascade)
+}
+
+model ScenarioOption {
+  id          String   @id @default(uuid())
+  scenarioId  String
+  text        String
+  isCorrect   Boolean
+  explanation String
+  scenario    Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+}
+
+model UserScenarioAttempt {
+  id               String   @id @default(uuid())
+  sessionId        String
+  scenarioId       String
+  selectedOptionId String?
+  userAnswerText   String?
+  isCorrect        Boolean?
+  selfRating       String?  // "confident" | "needs_review"
+  attemptedAt      DateTime @default(now())
+  scenario         Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+}

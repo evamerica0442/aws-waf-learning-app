@@ -1,0 +1,25 @@
+services:
+  # PostgreSQL Database
+  - type: postgresql
+    name: aws-waf-db
+    plan: free
+    databaseName: aws_waf_learning
+    ipAllowList: []
+
+  # Web Service (serves both API and static frontend)
+  - type: web
+    name: aws-waf-app
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/pillars
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aws-waf-db
+          property: connectionString
