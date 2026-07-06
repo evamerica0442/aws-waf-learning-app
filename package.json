@@ -12,7 +12,7 @@
     "seed": "tsx prisma/seed.ts",
     "db:migrate": "prisma migrate deploy",
     "db:push": "prisma db push",
-    "postinstall": "prisma generate && cd client && npm install"
+    "postinstall": "prisma generate && npm install --prefix client"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
