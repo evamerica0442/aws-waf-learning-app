@@ -278,7 +278,7 @@ app.get('/api/progress/:sessionId', async (req: Request, res: Response) => {
 });
 
 // Serve static frontend in production
-const clientBuildPath = path.join(__dirname, '..', 'client', 'dist');
+const clientBuildPath = path.resolve(process.cwd(), 'client', 'dist');
 app.use(express.static(clientBuildPath));
 
 // SPA fallback - serve index.html for any non-API routes
